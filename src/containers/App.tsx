@@ -1,71 +1,118 @@
 import React, {useState} from 'react';
-import Modal from "../components/Modal/Modal";
 import {ButtonConfig} from "../types";
+import Modal from "../components/Modal/Modal";
 import Alert from "../components/Alert/Alert";
 
 function App() {
-  const [showModal1, setShowModal1] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
+  const [modals, setModals] = useState<boolean[]>(new Array(2).fill(false));
+  const [alerts, setAlerts] = useState<boolean[]>(new Array(8).fill(true));
 
-  const [showAlert1, setShowAlert1] = useState(true);
-  const [showAlert2, setShowAlert2] = useState(true);
-  const [showAlert3, setShowAlert3] = useState(true);
+  const showModal = (index: number) => {
+    setModals(prev => prev.map((v, i) => i === index ? true : v));
+  }
 
-  const openModal1 = () => setShowModal1(true);
-  const openModal2 = () => setShowModal2(true);
+  const closeModal = (index: number) => {
+    setModals(prev => prev.map((v, i) => i === index ? false : v));
+  }
 
-  const cancel1 = () => setShowModal1(false);
-  const cancel2 = () => setShowModal2(false);
+  const showAllAlerts = () => setAlerts(prev => prev.map(() => true));
 
-  const onModalBtnClick = () => alert('You clicked "Continue" button!');
-
-  const openAlert1 = () => {
-  };
-  const openAlert2 = () => {
+  const closeAlert = (index: number) => {
+    setAlerts(prev => prev.map((v, i) => i === index ? false : v));
   };
 
-  const closeAlert1 = () => setShowAlert1(false);
-  const closeAlert2 = () => setShowAlert2(false);
-  const closeAlert3 = () => setShowAlert3(false);
+  const isResetDisabled = () => alerts.every((v) => v);
+
 
   const btnConfig: ButtonConfig[] = [
-    {id: '1', type: 'primary', label: 'Continue', onClick: onModalBtnClick},
-    {id: '2', type: 'danger', label: 'Close', onClick: cancel2}
+    {id: '1', type: 'primary', label: 'Continue', onClick: () => alert('You clicked "Continue" button!')},
+    {
+      id: '2', type: 'danger', label: 'Close', onClick: () => {
+        closeModal(1)
+      }
+    }
   ];
 
   return (
     <>
       <div className="container">
         <div className="row">
-          <h1 className="text-center">Demo</h1>
-
-          <div className="border p-3">
-            <h2>Modal</h2>
-            <div className="border p-2">
-              <p>Launch Modal</p>
-              <button className="btn btn-primary" onClick={openModal1}>Show Modal</button>
-              <button className="btn btn-primary" onClick={openModal2}>Modal with additional button</button>
+          <h2 className="text-center border-bottom mb-4 p-2">Demo: Modal & Alert</h2>
+          <h3 className="mb-3">Modal</h3>
+          <div className="mb-5">
+            <div className="border p-3">
+              <h4>1. Simple modal</h4>
+              <p>The button below will show an example of a simple modal. There are 2
+                options to close it: 1 - click anywhere out of the dialog window,
+                2 - click the close button at the top-right of the dialog.</p>
+              <button className="btn btn-primary mb-5" onClick={() => showModal(0)}>Simple Modal</button>
+              <h4>2. Modal with buttons</h4>
+              <p>The next example of a modal window has the same functionality as previous one but also includes 2
+                additional buttons. By default, the first one calls windows.alert and
+                the second closes the modal.</p>
+              <button className="btn btn-primary" onClick={() => showModal(1)}>Modal with Buttons</button>
             </div>
           </div>
-
-          <div className="border p-3">
-            <h2>Alert</h2>
-            <div className="border p-2">
-              <p>Show alert</p>
-              <button className="btn btn-primary mb-3">Add</button>
-              <Alert show={showAlert1} type="warning" onDismiss={closeAlert1}>Alert 1 asdfasdf</Alert>
-              <Alert show={showAlert2} type="success" onDismiss={closeAlert2}>Alert 2 sdfasdfasdf</Alert>
-              <Alert show={showAlert3} type="danger" clickDismissible onDismiss={closeAlert3}>Alert 3 sdfasdfasdf</Alert>
+          <h3 className="mb-3">Alert</h3>
+          <div className="">
+            <div className="border p-3 mb-3">
+              <p>You can click the button below after you close some of following alerts in order to see hidden ones
+                again.</p>
+              <button className="btn btn-primary mb-3" disabled={isResetDisabled()} onClick={showAllAlerts}>Show all
+                Alerts
+              </button>
+              <h4>Option 1</h4>
+              <p>A simple alert allows you to provide some important information or notifications. In order to close it
+                you can click anywhere within this alert.</p>
+              <Alert show={alerts[4]} type="primary" clickDismissible onDismiss={() => {
+                closeAlert(4)
+              }}>Lorem ipsum dolor sit amet. Lorem dolor.</Alert>
+              <Alert show={alerts[5]} type="success" clickDismissible onDismiss={() => {
+                closeAlert(5)
+              }}>Lorem ipsum dolor sit amet. Lorem ipsum dolor.</Alert>
+              <Alert show={alerts[6]} type="danger" clickDismissible onDismiss={() => {
+                closeAlert(6)
+              }}>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit.</Alert>
+              <Alert show={alerts[7]} type="warning" clickDismissible onDismiss={() => {
+                closeAlert(7)
+              }}>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consectetur.</Alert>
+              <h4 className="mt-5">Option 2. Alert with a close button</h4>
+              <p>This example shows similar alert but with a close button. Unlike the preceding one this alert can be
+                closed only by clicking the button.</p>
+              <Alert show={alerts[0]} type="primary" onDismiss={() => {
+                closeAlert(0)
+              }}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</Alert>
+              <Alert show={alerts[1]} type="success" onDismiss={() => {
+                closeAlert(1)
+              }}>Lorem ipsum dolor sit amet, consectetur adipisicing.</Alert>
+              <Alert show={alerts[2]} type="danger" onDismiss={() => {
+                closeAlert(2)
+              }}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum fugit nesciunt nobis tempora
+                vero..</Alert>
+              <Alert show={alerts[3]} type="warning" onDismiss={() => {
+                closeAlert(3)
+              }}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, quibusdam!</Alert>
             </div>
           </div>
-
         </div>
       </div>
-      <Modal show={showModal1} title="Demo" onClose={cancel1}>
-        <div className="modal-body">some text</div>
+      <Modal show={modals[0]} title="Simple modal" onClose={() => closeModal(0)}>
+        <div className="modal-body">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur <strong>adipisicing elit</strong>.
+            A aspernatur consequuntur deleniti eaque eligendi harum itaque nihil quaerat quisquam velit.
+          </p>
+          <p>Lorem ipsum dolor sit amet, <em>consectetur</em> adipisicing elit. Minus, odio.</p>
+        </div>
       </Modal>
-      <Modal show={showModal2} title="Demo" onClose={cancel2} btnConfig={btnConfig}>
-        <div className="modal-body">some text</div>
+      <Modal show={modals[1]} title="Modal with buttons" onClose={() => closeModal(1)} btnConfig={btnConfig}>
+        <div className="modal-body">
+          <p>Lorem ipsum dolor sit amet, <em>consectetur</em> adipisicing elit. Minus, odio.</p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur <strong>adipisicing elit</strong>.
+            A aspernatur consequuntur deleniti eaque eligendi harum itaque nihil quaerat quisquam velit.
+          </p>
+        </div>
       </Modal>
     </>
   );

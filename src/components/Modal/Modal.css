@@ -1,0 +1,33 @@
+.Modal-enter {
+    opacity: 0;
+    display: block !important;
+    transform: translateY(3em);
+}
+
+.Modal-enter-active {
+    opacity: 1;
+    transition: opacity .5s, transform .5s;
+    transform: translateY(0);
+}
+
+.Modal-enter-done {
+    opacity: 1;
+    display: block !important;
+    transform: translateY(0);
+}
+
+.Modal-exit {
+    opacity: 1;
+    display: block !important;
+    transform: translateY(0);
+}
+
+.Modal-exit-active {
+    transform: translateY(3em);
+    opacity: 0;
+    transition: opacity .35s, transform .5s;
+}
+
+.Modal-exit-done {
+    opacity: 0;
+}

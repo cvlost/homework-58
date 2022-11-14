@@ -1,0 +1,37 @@
+.Alert-appear {
+    opacity: 0;
+}
+
+.Alert-appear-active {
+    opacity: 1;
+    transition: opacity 400ms;
+}
+
+.Alert-enter {
+    opacity: 0;
+    display: block !important;
+}
+
+.Alert-enter-active {
+    opacity: 1;
+    transition: opacity 400ms;
+}
+
+.Alert-enter-done {
+    opacity: 1;
+    display: block !important;
+}
+
+.Alert-exit {
+    opacity: 1;
+    display: block !important;
+}
+
+.Alert-exit-active {
+    opacity: 0;
+    transition: opacity 400ms;
+}
+
+.Alert-exit-done {
+    opacity: 0;
+}

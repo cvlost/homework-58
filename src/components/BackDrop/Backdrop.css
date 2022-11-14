@@ -1,0 +1,28 @@
+.Backdrop-enter {
+    opacity: 0;
+    display: block !important;
+}
+
+.Backdrop-enter-active {
+    opacity: .5;
+    transition: opacity 500ms;
+}
+
+.Backdrop-enter-done {
+    opacity: .5;
+    display: block !important;
+}
+
+.Backdrop-exit {
+    opacity: .5;
+    display: block !important;
+}
+
+.Backdrop-exit-active {
+    opacity: 0;
+    transition: opacity 500ms;
+}
+
+.Backdrop-exit-done {
+    opacity: 0;
+}
